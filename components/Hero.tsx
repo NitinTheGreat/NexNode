@@ -1,26 +1,32 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import Marquee from "react-fast-marquee"
+import { useRef } from 'react'
 
 export default function Hero() {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"]
+  })
+
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%'])
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0])
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dot-pattern">
+    <section ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <Marquee gradient={false} speed={50}>
-          <div className="flex">
-            {['NEXNODE', 'WEB DEVELOPMENT', 'NEXT.JS', 'NODE.JS', 'REACT', 'INNOVATION'].map((text, index) => (
-              <span key={index} className="text-9xl font-bold text-gray-100 dark:text-gray-800 opacity-20 mx-4">
-                {text}
-              </span>
-            ))}
-          </div>
-        </Marquee>
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-dot-pattern opacity-10" />
       </div>
-      <div className="relative z-10 text-center">
+      <motion.div 
+        className="relative z-10 text-center max-w-4xl px-4"
+        style={{ y, opacity }}
+      >
         <motion.h1 
-          className="text-6xl font-bold mb-4 glow-text"
+          className="text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -28,7 +34,7 @@ export default function Hero() {
           Welcome to NexNode
         </motion.h1>
         <motion.p 
-          className="text-xl mb-8"
+          className="text-2xl mb-8 text-foreground/80"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -37,22 +43,27 @@ export default function Hero() {
         </motion.p>
         <motion.a 
           href="#contact"
-          className="bg-primary text-primary-foreground px-6 py-3 rounded-full text-lg font-semibold hover:bg-primary/90 transition-colors"
+          className="bg-primary text-primary-foreground px-8 py-4 rounded-full text-xl font-semibold hover:bg-primary/90 transition-colors inline-block"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
           Get in Touch
         </motion.a>
-      </div>
-      <div className="absolute bottom-0 right-0 w-1/3 h-1/3">
+      </motion.div>
+      <motion.div 
+        className="absolute inset-0 z-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 0.5 }}
+      >
         <Image
-          src="/hero-image.png"
-          alt="Web Development Illustration"
-          width={400}
-          height={400}
-          className="object-contain"
+          src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80"
+          alt="Digital Network Background"
+          layout="fill"
+          objectFit="cover"
+          className="opacity-20"
         />
-      </div>
+      </motion.div>
       <BackgroundAnimations />
     </section>
   )
@@ -61,9 +72,50 @@ export default function Hero() {
 function BackgroundAnimations() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-      <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-      <div className="absolute bottom-1/4 left-1/3 w-64 h-64 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+      <motion.div 
+        className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary rounded-full mix-blend-multiply filter blur-xl opacity-70"
+        animate={{
+          scale: [1, 2, 2, 1, 1],
+          rotate: [0, 0, 270, 270, 0],
+          borderRadius: ["20%", "20%", "50%", "50%", "20%"],
+        }}
+        transition={{
+          duration: 20,
+          ease: "easeInOut",
+          times: [0, 0.2, 0.5, 0.8, 1],
+          repeat: Infinity,
+          repeatDelay: 1
+        }}
+      />
+      <motion.div 
+        className="absolute top-1/3 right-1/4 w-64 h-64 bg-secondary rounded-full mix-blend-multiply filter blur-xl opacity-70"
+        animate={{
+          y: [0, 100, 200, 100, 0],
+          x: [0, -100, 0, 100, 0],
+          scale: [1, 1.1, 1.2, 1.1, 1],
+        }}
+        transition={{
+          duration: 18,
+          ease: "easeInOut",
+          times: [0, 0.25, 0.5, 0.75, 1],
+          repeat: Infinity,
+          repeatDelay: 0
+        }}
+      />
+      <motion.div 
+        className="absolute bottom-1/4 left-1/3 w-64 h-64 bg-accent rounded-full mix-blend-multiply filter blur-xl opacity-70"
+        animate={{
+          rotate: [0, 180, 360],
+          scale: [1, 1.5, 1],
+        }}
+        transition={{
+          duration: 15,
+          ease: "easeInOut",
+          times: [0, 0.5, 1],
+          repeat: Infinity,
+          repeatDelay: 0
+        }}
+      />
     </div>
   )
 }

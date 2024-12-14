@@ -34,7 +34,7 @@ export default function Header() {
   return (
     <>
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 bg-primary rounded-full pointer-events-none z-50"
+        className="fixed top-0 left-0 w-8 h-8 bg-primary rounded-full pointer-events-none z-50 mix-blend-difference"
         style={{
           x: cursorXSpring,
           y: cursorYSpring,
