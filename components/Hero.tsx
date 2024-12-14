@@ -31,7 +31,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          Welcome to NexNode
+          Welcome to NexNode...
         </motion.h1>
         <motion.p 
           className="text-2xl mb-8 text-foreground/80"
