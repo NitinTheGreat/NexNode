@@ -11,14 +11,17 @@ export default function Footer() {
             </Link>
           </div>
           <nav className="flex gap-4">
-            <Link href="#projects" className="hover:text-primary transition-colors">
-              Projects
+            <Link href="https://www.linkedin.com/company/nexnode/" className="hover:text-primary transition-colors">
+              Linkedin
             </Link>
-            <Link href="#faq" className="hover:text-primary transition-colors">
-              FAQ
+            <Link href="https://www.instagram.com/nexnode01" className="hover:text-primary transition-colors">
+              Instagram
             </Link>
-            <Link href="#contact" className="hover:text-primary transition-colors">
-              Contact
+            <Link href="https://x.com/NexNode01" className="hover:text-primary transition-colors">
+              Twitter
+            </Link>
+            <Link href="https://www.fiverr.com/nexnode?up_rollout=true" className="hover:text-primary transition-colors">
+              Fiverr
             </Link>
           </nav>
         </div>
