@@ -20,7 +20,7 @@ export default function Footer() {
             <Link href="https://x.com/NexNode01" className="hover:text-primary transition-colors">
               Twitter
             </Link>
-            <Link href="https://www.fiverr.com/nexnode?up_rollout=true" className="hover:text-primary transition-colors">
+            <Link href="https://www.fiverr.com/nexnode?source=gig_page&gigs=slug%3Acreate-a-custom-website-that-brings-your-ideas-to-life%2Cpckg_id%3A1" className="hover:text-primary transition-colors">
               Fiverr
             </Link>
           </nav>
