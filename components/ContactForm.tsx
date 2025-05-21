@@ -137,7 +137,7 @@ const ContactSection = forwardRef<HTMLElement>((props, ref) => {
                     href="mailto:nitinpandey1304@gmail.com"
                     className="text-slate-300 hover:text-indigo-400 transition-colors cursor-pointer"
                   >
-                    nitinpandey1304@gmail.com
+                    nexnode@gmail.com
                   </a>
                 </div>
               </div>
@@ -148,7 +148,7 @@ const ContactSection = forwardRef<HTMLElement>((props, ref) => {
                 </div>
                 <div>
                   <h4 className="text-lg font-medium text-white">Location</h4>
-                  <p className="text-slate-300">Vellore, India</p>
+                  <p className="text-slate-300">India</p>
                 </div>
               </div>
 
@@ -159,22 +159,22 @@ const ContactSection = forwardRef<HTMLElement>((props, ref) => {
                 <div>
                   <h4 className="text-lg font-medium text-white">LinkedIn</h4>
                   <a
-                    href="https://linkedin.com/in/nitinkrpandey"
+                    href="https://linkedin.com/in/nexnode"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-slate-300 hover:text-indigo-400 transition-colors cursor-pointer"
                   >
-                    linkedin.com/in/nitinkrpandey
+                    linkedin.com/in/nexnode
                   </a>
                 </div>
               </div>
             </div>
 
             <div className="mt-10">
-              <h4 className="text-lg font-medium text-white mb-4">Follow Me</h4>
+              <h4 className="text-lg font-medium text-white mb-4">Follow Us</h4>
               <div className="flex gap-4">
                 <motion.a
-                  href="https://github.com/NitinTheGreat"
+                  href="https://github.com/nexnode"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-3 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors cursor-pointer"
@@ -185,7 +185,7 @@ const ContactSection = forwardRef<HTMLElement>((props, ref) => {
                 </motion.a>
 
                 <motion.a
-                  href="https://linkedin.com/in/nitinkrpandey"
+                  href="https://linkedin.com/in/nexnode"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-3 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors cursor-pointer"
@@ -196,7 +196,7 @@ const ContactSection = forwardRef<HTMLElement>((props, ref) => {
                 </motion.a>
 
                 <motion.a
-                  href="https://twitter.com/NItinTheGreat"
+                  href="https://twitter.com/nexnode"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-3 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors cursor-pointer"
