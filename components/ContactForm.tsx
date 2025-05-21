@@ -2,47 +2,59 @@
 
 import type React from "react"
 
-import { forwardRef, useRef, useState } from "react"
-import { motion, useInView } from "framer-motion"
+import { forwardRef, useState } from "react"
+import { motion } from "framer-motion"
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa"
 import { MdEmail, MdLocationOn } from "react-icons/md"
-import { Loader2 } from 'lucide-react'
+import { Loader2 } from "lucide-react"
 
 const ContactSection = forwardRef<HTMLElement>((props, ref) => {
-  const containerRef = useRef<HTMLDivElement>(null)
-  // Increase the amount and margin to ensure the animation stays visible longer
-  const isInView = useInView(containerRef, { 
-    once: false, 
-    amount: 0.1,  // Reduced from 0.2 to 0.1 to trigger earlier
-    margin: "400px 0px" // Increased margin to keep it visible longer
-  })
-  
   const [formStatus, setFormStatus] = useState<{
     type: "success" | "error" | null
     message: string
   }>({ type: null, message: "" })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [formErrors, setFormErrors] = useState<{
+    name?: string
+    email?: string
+    subject?: string
+    message?: string
+  }>({})
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+    // Reset previous errors
+    setFormErrors({})
+
+    // Get form data
+    const formData = new FormData(e.currentTarget)
+    const name = formData.get("name") as string
+    const email = formData.get("email") as string
+    const subject = formData.get("subject") as string
+    const message = formData.get("message") as string
+
+    // Check for empty fields
+    const errors: {
+      name?: string
+      email?: string
+      subject?: string
+      message?: string
+    } = {}
+
+    if (!name) errors.name = "Name field is empty"
+    if (!email) errors.email = "Email field is empty"
+    if (!subject) errors.subject = "Subject field is empty"
+    if (!message) errors.message = "Message field is empty"
+
+    // If any errors, show them and stop submission
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors)
+      return
+    }
+
     try {
       setIsSubmitting(true)
-
-      const formData = new FormData(e.currentTarget)
-
-      // For development, simulate a successful submission
-      // if (process.env.NODE_ENV === "development") {
-      //   setTimeout(() => {
-      //     setFormStatus({
-      //       type: "success",
-      //       message: "Message sent successfully! (Development mode)",
-      //     })
-      //     e.currentTarget.reset()
-      //     setIsSubmitting(false)
-      //   }, 1000)
-      //   return
-      // }
 
       const response = await fetch("/api/contact", {
         method: "POST",
@@ -62,14 +74,12 @@ const ContactSection = forwardRef<HTMLElement>((props, ref) => {
         })
         // Reset form
         e.currentTarget.reset()
-      }
-      else {
+      } else {
         setFormStatus({
           type: "error",
           message: data.error,
         })
       }
-    
     } finally {
       setIsSubmitting(false)
     }
@@ -78,50 +88,19 @@ const ContactSection = forwardRef<HTMLElement>((props, ref) => {
   return (
     <section ref={ref} id="contact" className="py-20 md:py-32 px-6">
       <div className="max-w-7xl mx-auto">
-        <motion.div
-          ref={containerRef}
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{
-            duration: 0.8,
-            type: "spring",
-            stiffness: 100,
-            damping: 20,
-          }}
-        >
-          <motion.h2
-            className="text-4xl md:text-5xl font-bold mb-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-          >
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-indigo-400">
               Get In Touch
             </span>
-          </motion.h2>
-          <motion.p
-            className="text-lg text-slate-300 max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-          >
+          </h2>
+          <p className="text-lg text-slate-300 max-w-2xl mx-auto">
             Don't worry, this works... Feel free to send a message
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-            transition={{
-              duration: 0.8,
-              type: "spring",
-              stiffness: 100,
-              damping: 20,
-            }}
-            className="bg-gradient-to-br from-slate-900 to-indigo-950/50 p-8 rounded-2xl border border-slate-800"
-          >
+          <div className="bg-gradient-to-br from-slate-900 to-indigo-950/50 p-8 rounded-2xl border border-slate-800">
             <h3 className="text-2xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400">
               Contact Information
             </h3>
@@ -207,20 +186,9 @@ const ContactSection = forwardRef<HTMLElement>((props, ref) => {
                 </motion.a>
               </div>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
-            transition={{
-              duration: 0.8,
-              type: "spring",
-              stiffness: 100,
-              damping: 20,
-              delay: 0.2,
-            }}
-            className="bg-gradient-to-br from-slate-900 to-indigo-950/50 p-8 rounded-2xl border border-slate-800"
-          >
+          <div className="bg-gradient-to-br from-slate-900 to-indigo-950/50 p-8 rounded-2xl border border-slate-800">
             <h3 className="text-2xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400">
               Send Me a Message
             </h3>
@@ -234,10 +202,10 @@ const ContactSection = forwardRef<HTMLElement>((props, ref) => {
                   type="text"
                   id="name"
                   name="name"
-                  required
                   className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors text-white cursor-text"
                   placeholder="Your name"
                 />
+                {formErrors.name && <p className="mt-1 text-sm text-red-400">{formErrors.name}</p>}
               </div>
 
               <div>
@@ -248,10 +216,10 @@ const ContactSection = forwardRef<HTMLElement>((props, ref) => {
                   type="email"
                   id="email"
                   name="email"
-                  required
                   className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors text-white cursor-text"
                   placeholder="Your email"
                 />
+                {formErrors.email && <p className="mt-1 text-sm text-red-400">{formErrors.email}</p>}
               </div>
 
               <div>
@@ -262,10 +230,10 @@ const ContactSection = forwardRef<HTMLElement>((props, ref) => {
                   type="text"
                   id="subject"
                   name="subject"
-                  required
                   className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors text-white cursor-text"
                   placeholder="Subject"
                 />
+                {formErrors.subject && <p className="mt-1 text-sm text-red-400">{formErrors.subject}</p>}
               </div>
 
               <div>
@@ -276,10 +244,10 @@ const ContactSection = forwardRef<HTMLElement>((props, ref) => {
                   id="message"
                   name="message"
                   rows={5}
-                  required
                   className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors text-white resize-none cursor-text"
                   placeholder="Your message"
                 />
+                {formErrors.message && <p className="mt-1 text-sm text-red-400">{formErrors.message}</p>}
               </div>
 
               {formStatus.type && (
@@ -311,7 +279,7 @@ const ContactSection = forwardRef<HTMLElement>((props, ref) => {
                 )}
               </motion.button>
             </form>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
