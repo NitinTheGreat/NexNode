@@ -8,24 +8,18 @@ import Testimonials from '@/components/Testimonials'
 import TeamSkills from '@/components/TeamSkills'
 import ContactForm from '@/components/ContactForm'
 import Footer from '@/components/Footer'
-
+import ExpertiseSection from '@/components/Expertise'
 export default function Home() {
   return (
     <main className="min-h-screen bg-background">
       <Header />
       <Hero />
       <Marquee 
-        items={['INNOVATIVE', 'RESPONSIVE', 'SCALABLE', 'MODERN', 'FAST', 'SECURE']} 
-        direction="left"
-        speed={40}
+        
       />
       <FeaturedProjects />
-      <Marquee 
-        items={['NEXT.JS', 'REACT', 'NODE.JS', 'TYPESCRIPT', 'MONGODB', 'POSTGRESQL']} 
-        direction="right"
-        speed={30}
-        className="my-8"
-      />
+      <ExpertiseSection />
+      
       <AllProjects />
       <FAQ />
       <Testimonials />
