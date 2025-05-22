@@ -298,7 +298,7 @@ export default function CosmicShowcase() {
 
         {/* Services Grid */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10 mt-24"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-[99] mt-24"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
@@ -306,11 +306,11 @@ export default function CosmicShowcase() {
           {services.map((service, index) => (
             <motion.div
               key={service.name}
-              className="group relative"
+              className="group relative z-[999]"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 * index }}
-              whileHover={{ scale: 1.05, zIndex: 20 }}
+              whileHover={{ scale: 1.05, zIndex: 999 }}
               onHoverStart={() => setActiveNode(index)}
               onHoverEnd={() => setActiveNode(null)}
             >
@@ -382,63 +382,7 @@ export default function CosmicShowcase() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.8 }}
         >
-          <motion.button
-            className="px-8 py-4 rounded-full text-lg font-medium relative overflow-hidden group"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            {/* Button background with animated gradient */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-400"
-              animate={{
-                background: [
-                  "linear-gradient(90deg, #0070f3 0%, #00c2ff 100%)",
-                  "linear-gradient(180deg, #0070f3 0%, #00c2ff 100%)",
-                  "linear-gradient(270deg, #0070f3 0%, #00c2ff 100%)",
-                  "linear-gradient(360deg, #0070f3 0%, #00c2ff 100%)",
-                  "linear-gradient(90deg, #0070f3 0%, #00c2ff 100%)",
-                ],
-              }}
-              transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-            />
-
-            {/* Glow effect on hover */}
-            <motion.div
-              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              style={{
-                boxShadow: "0 0 30px 5px rgba(0, 112, 243, 0.7) inset",
-              }}
-            />
-
-            {/* Button text */}
-            <span className="relative z-10 text-white">Start Your Project</span>
-
-            {/* Animated particles on hover */}
-            <AnimatePresence>
-              {isHovering && (
-                <>
-                  {Array.from({ length: 10 }).map((_, i) => (
-                    <motion.div
-                      key={`btn-particle-${i}`}
-                      className="absolute w-1 h-1 rounded-full bg-white pointer-events-none"
-                      initial={{
-                        x: "50%",
-                        y: "50%",
-                        opacity: 0.8,
-                      }}
-                      animate={{
-                        x: `${50 + (Math.random() * 100 - 50)}%`,
-                        y: `${50 + (Math.random() * 100 - 50)}%`,
-                        opacity: 0,
-                      }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.8 }}
-                    />
-                  ))}
-                </>
-              )}
-            </AnimatePresence>
-          </motion.button>
+           
         </motion.div>
       </div>
 

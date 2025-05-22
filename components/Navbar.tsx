@@ -3,12 +3,20 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
+import { useMotionValue, useSpring } from "framer-motion"
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState("home")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [hoverItem, setHoverItem] = useState<string | null>(null)
+
+  const cursorX = useMotionValue(-100)
+  const cursorY = useMotionValue(-100)
+
+  const springConfig = { damping: 25, stiffness: 700 }
+  const cursorXSpring = useSpring(cursorX, springConfig)
+  const cursorYSpring = useSpring(cursorY, springConfig)
 
   // Handle scroll events
   useEffect(() => {
@@ -18,6 +26,18 @@ export default function Navbar() {
 
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  // Handle cursor movement
+  useEffect(() => {
+    const moveCursor = (e: MouseEvent) => {
+      cursorX.set(e.clientX - 16)
+      cursorY.set(e.clientY - 16)
+    }
+    window.addEventListener("mousemove", moveCursor)
+    return () => {
+      window.removeEventListener("mousemove", moveCursor)
+    }
   }, [])
 
   // Navigation items
@@ -36,11 +56,16 @@ export default function Navbar() {
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
     >
+      <motion.div
+        className="fixed top-0 left-0 w-8 h-8 bg-primary rounded-full pointer-events-none z-50 mix-blend-difference"
+        style={{
+          x: cursorXSpring,
+          y: cursorYSpring,
+        }}
+      />
       <motion.nav
         className={`px-4 sm:px-6 py-3 transition-all duration-300 ${
-          isScrolled
-            ? "bg-[#050b18]/90 backdrop-blur-lg shadow-lg shadow-blue-900/10"
-            : "bg-transparent"
+          isScrolled ? "bg-[#050b18]/90 backdrop-blur-lg shadow-lg shadow-blue-900/10" : "bg-transparent"
         }`}
         animate={{
           borderBottom: isScrolled ? "1px solid rgba(0, 112, 243, 0.2)" : "1px solid rgba(255, 255, 255, 0.05)",
@@ -65,7 +90,7 @@ export default function Navbar() {
                 onMouseLeave={() => setHoverItem(null)}
               >
                 <span className="relative z-10">{item.name}</span>
-                
+
                 {/* Hover effect */}
                 <AnimatePresence>
                   {hoverItem === item.name && (
@@ -81,7 +106,7 @@ export default function Navbar() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-                
+
                 {/* Active indicator */}
                 {activeSection === item.name.toLowerCase() && (
                   <motion.div
@@ -115,8 +140,8 @@ export default function Navbar() {
                 transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
               /> */}
 
-              {/* Glow effect on hover */}
-              {/* <motion.div
+            {/* Glow effect on hover */}
+            {/* <motion.div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 style={{
                   boxShadow: "0 0 20px 5px rgba(0, 112, 243, 0.7) inset",
@@ -204,7 +229,7 @@ export default function Navbar() {
                     <button className="w-full mt-2 px-3 py-2 bg-gradient-to-r from-blue-600 to-blue-400 rounded-md text-white font-medium">
                       Get Started
                     </button>
-                  </motion.div> */} 
+                  </motion.div> */}
                 </div>
               </div>
             </motion.div>
