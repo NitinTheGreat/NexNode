@@ -3,7 +3,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import Marquee from "react-fast-marquee"
-import { useRef } from 'react'
+import { useRef, useEffect, useState } from 'react'
 
 export default function Hero() {
   const ref = useRef(null)
@@ -15,56 +15,128 @@ export default function Hero() {
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%'])
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0])
 
+  // Eye tracking state
+  const heroRef = useRef<HTMLDivElement>(null)
+  const [eyePos, setEyePos] = useState({ left: { x: 0, y: 0 }, right: { x: 0, y: 0 } })
+
+  useEffect(() => {
+    function handleMouseMove(e: MouseEvent) {
+      if (!heroRef.current) return;
+      const rect = heroRef.current.getBoundingClientRect();
+      const leftEyeCenter = { x: rect.width / 2 - 60, y: rect.height / 2 };
+      const rightEyeCenter = { x: rect.width / 2 + 60, y: rect.height / 2 };
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+      function getPupilOffset(eye: { x: number; y: number }) {
+        const dx = mouseX - eye.x;
+        const dy = mouseY - eye.y;
+        const angle = Math.atan2(dy, dx);
+        const radius = 18;
+        return {
+          x: Math.cos(angle) * radius,
+          y: Math.sin(angle) * radius,
+        };
+      }
+      setEyePos({
+        left: getPupilOffset(leftEyeCenter),
+        right: getPupilOffset(rightEyeCenter),
+      });
+    }
+    const node = heroRef.current;
+    if (node) node.addEventListener('mousemove', handleMouseMove);
+    return () => { if (node) node.removeEventListener('mousemove', handleMouseMove); };
+  }, []);
+
   return (
-    <section ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section ref={heroRef} className="hero-section relative flex items-center justify-center min-h-screen overflow-hidden">
+      {/* Background Gradient */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 mix-blend-multiply" />
-        <div className="absolute inset-0 bg-dot-pattern opacity-10" />
+        <Image
+          src="/gradient.svg"
+          alt="Gradient Background"
+          fill
+          priority
+          className="object-cover w-full h-full"
+        />
+        <Image
+          src="/stars.png"
+          alt="Stars Overlay"
+          fill
+          priority
+          className="object-cover w-full h-full opacity-60 pointer-events-none"
+        />
       </div>
-      <motion.div 
-        className="relative z-10 text-center max-w-4xl px-4"
-        style={{ y, opacity }}
-      >
-        <motion.h1 
-          className="text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary"
+
+      <div className="container relative z-10 flex flex-col items-center justify-center py-20 gap-8 max-w-4xl mx-auto">
+        <motion.h1
+          className="text-white font-bold text-center flex flex-wrap items-center justify-center w-full"
+          style={{ fontSize: 'clamp(2.5rem, 7vw, 6rem)', lineHeight: 1.1 }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          Welcome to NexNode...
+          <span>
+            We Build <span className="text-blue-500">Stunning</span>&nbsp;
+          </span>
+
+
+          <span className="inline-flex items-center gap-2 mx-2">
+            <span>Websites</span>
+            {/* Eyes */}
+            <div className="pointer-events-none relative flex flex-row items-center justify-center gap-2" style={{ height: '64px' }}>
+              {/* Left Eye */}
+              <div className="relative w-16 h-16 bg-white rounded-full border-4 border-black flex items-center justify-center mx-1">
+                <div
+                  className="absolute w-6 h-6 bg-black rounded-full"
+                  style={{
+                    left: `calc(50% + ${eyePos.left.x * 0.7}px - 12px)`,
+                    top: `calc(50% + ${eyePos.left.y * 0.7}px - 12px)`,
+                    transition: 'none',
+                  }}
+                />
+              </div>
+              {/* Right Eye */}
+              <div className="relative w-16 h-16 bg-white rounded-full border-4 border-black flex items-center justify-center mx-1">
+                <div
+                  className="absolute w-6 h-6 bg-black rounded-full"
+                  style={{
+                    left: `calc(50% + ${eyePos.right.x * 0.7}px - 12px)`,
+                    top: `calc(50% + ${eyePos.right.y * 0.7}px - 12px)`,
+                    transition: 'none',
+                  }}
+                />
+              </div>
+            </div>
+            <span>That</span>
+          </span>
+
+          <span>&nbsp;Drive Results</span>
         </motion.h1>
-        <motion.p 
-          className="text-2xl mb-8 text-foreground/80"
+
+        <motion.p
+          className="text-xl text-gray-300 text-center max-w-2xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          Crafting cutting-edge web experiences with Next.js and Node.js
+          Custom-designed. Conversion-focused. Built to grow your business.
         </motion.p>
-        <motion.a 
-          href="#contact"
-          className="bg-primary text-primary-foreground px-8 py-4 rounded-full text-xl font-semibold hover:bg-primary/90 transition-colors inline-block"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="w-full flex justify-center"
         >
-          Get in Touch
-        </motion.a>
-      </motion.div>
-      <motion.div 
-        className="absolute inset-0 z-0"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 0.5 }}
-      >
-        <Image
-          src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80"
-          alt="Digital Network Background"
-          layout="fill"
-          objectFit="cover"
-          className="opacity-20"
-        />
-      </motion.div>
-      <BackgroundAnimations />
+          <a
+            href="#contact"
+            className="button-fill text-white font-semibold text-lg px-12 py-4 rounded-full shadow-lg transition-all"
+            style={{ backgroundImage: 'linear-gradient(120deg, #e82fa9, #e39a0b)' }}
+          >
+            Get Started
+          </a>
+        </motion.div>
+      </div>
     </section>
   )
 }
@@ -72,7 +144,7 @@ export default function Hero() {
 function BackgroundAnimations() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      <motion.div 
+      <motion.div
         className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary rounded-full mix-blend-multiply filter blur-xl opacity-70"
         animate={{
           scale: [1, 2, 2, 1, 1],
@@ -87,7 +159,7 @@ function BackgroundAnimations() {
           repeatDelay: 1
         }}
       />
-      <motion.div 
+      <motion.div
         className="absolute top-1/3 right-1/4 w-64 h-64 bg-secondary rounded-full mix-blend-multiply filter blur-xl opacity-70"
         animate={{
           y: [0, 100, 200, 100, 0],
@@ -102,7 +174,7 @@ function BackgroundAnimations() {
           repeatDelay: 0
         }}
       />
-      <motion.div 
+      <motion.div
         className="absolute bottom-1/4 left-1/3 w-64 h-64 bg-accent rounded-full mix-blend-multiply filter blur-xl opacity-70"
         animate={{
           rotate: [0, 180, 360],
@@ -119,4 +191,3 @@ function BackgroundAnimations() {
     </div>
   )
 }
-
