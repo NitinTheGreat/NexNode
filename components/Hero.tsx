@@ -81,7 +81,7 @@ export default function Hero() {
 
 
           <span className="inline-flex items-center gap-2 mx-2">
-            <span>Websites</span>
+            <span className='text-2xl lg:text-7xl'>Websites</span>
             {/* Eyes */}
             <div className="pointer-events-none relative flex flex-row items-center justify-center gap-2" style={{ height: '64px' }}>
               {/* Left Eye */}
