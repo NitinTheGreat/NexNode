@@ -8,26 +8,29 @@ import { ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 
 const featuredProjects = [
-  {
+   {
     id: 1,
-    title: "E-commerce Platform",
-    description: "A fully responsive e-commerce solution with real-time inventory management.",
-    image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=600&q=80",
-    tags: ["Next.js", "Node.js", "MongoDB"]
+    title: "WomenTechies'25",
+    description:
+      "An annual hackathon celebrating women in technology with workshops, mentoring, and collaborative coding challenges.",
+    image: "/wt'25.png ",
+    tags: ["React", "Node.js", "MongoDB", "Event Management"],
   },
   {
     id: 2,
-    title: "Social Media Dashboard",
-    description: "An intuitive dashboard for managing multiple social media accounts.",
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=600&q=80",
-    tags: ["React", "Express", "PostgreSQL"]
+    title: "StreetGuardian",
+    description:
+      "A safety application that uses real-time monitoring and alerts to help users navigate urban environments securely.",
+    image: "/StreetGuardian.png",
+    tags: ["React Native", "Firebase", "Maps API", "Safety"],
   },
   {
     id: 3,
-    title: "AI-powered Chatbot",
-    description: "An intelligent chatbot for customer support with natural language processing.",
-    image: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?auto=format&fit=crop&w=600&q=80",
-    tags: ["Next.js", "TensorFlow.js", "Node.js"]
+    title: "DealHarbor",
+    description:
+      "A marketplace platform connecting buyers with sellers offering discounted products and limited-time deals.",
+    image: "/DealHarbor.png",
+    tags: ["Next.js", "Express", "PostgreSQL", "E-commerce"],
   }
 ]
 
