@@ -2,9 +2,9 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Check, ChevronsUpDown } from "lucide-react"
+import { Check, ChevronsUpDown, ExternalLink } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
@@ -18,6 +18,7 @@ const allProjects = [
       "An annual hackathon celebrating women in technology with workshops, mentoring, and collaborative coding challenges.",
     image: "/wt'25.png ",
     tags: ["React", "Node.js", "MongoDB", "Event Management"],
+    link: "https://womentechies.dscvit.com/",
   },
   {
     id: 2,
@@ -26,6 +27,7 @@ const allProjects = [
       "A safety application that uses real-time monitoring and alerts to help users navigate urban environments securely.",
     image: "/StreetGuardian.png",
     tags: ["React Native", "Firebase", "Maps API", "Safety"],
+    link: "https://www.streetguardian.tech/",
   },
   {
     id: 3,
@@ -34,6 +36,7 @@ const allProjects = [
       "A marketplace platform connecting buyers with sellers offering discounted products and limited-time deals.",
     image: "/DealHarbor.png",
     tags: ["Next.js", "Express", "PostgreSQL", "E-commerce"],
+    link:"https://deal-harbor.vercel.app/"
   },
   {
     id: 4,
@@ -42,6 +45,7 @@ const allProjects = [
       "A comprehensive flight reservation system with search, comparison, and booking capabilities for travelers.",
     image: "/SkyQuest.png",
     tags: ["React", "Node.js", "Travel API", "Payment Gateway"],
+    link:"https://flight-booking-roan.vercel.app/"
   },
   {
     id: 5,
@@ -50,6 +54,7 @@ const allProjects = [
       "An interactive cultural experience celebrating the Festival of Lights with stories, traditions, and virtual celebrations.",
     image: "/Diwali.png",
     tags: ["Three.js", "WebGL", "Animation", "Cultural"],
+    link:"http://diwali-24.vercel.app/"
   },
   {
     id: 6,
@@ -58,6 +63,7 @@ const allProjects = [
       "A developer tool that transforms HTML to JSX and vice versa, streamlining the process of working with React components.",
     image: "/JSXConverter.png",
     tags: ["JavaScript", "React", "Parser", "Developer Tools"],
+    link:"https://jsx-convertor.vercel.app/"
   },
 ]
 
@@ -115,8 +121,8 @@ export default function AllProjects() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <Card className="overflow-hidden h-full">
-                <CardContent className="p-0">
+              <Card className="overflow-hidden h-full flex flex-col">
+                <CardContent className="p-0 flex-grow">
                   <img
                     src={project.image || "/placeholder.svg"}
                     alt={project.title}
@@ -134,6 +140,19 @@ export default function AllProjects() {
                     </div>
                   </div>
                 </CardContent>
+                <CardFooter className="p-6 pt-0">
+                  {project.link ? (
+                    <a href={project.link} target="_blank" rel="noopener noreferrer" className="w-full">
+                      <Button variant="default" className="w-full">
+                        View Project <ExternalLink className="ml-2 h-4 w-4" />
+                      </Button>
+                    </a>
+                  ) : (
+                    <Button variant="outline" className="w-full" disabled>
+                      Coming Soon
+                    </Button>
+                  )}
+                </CardFooter>
               </Card>
             </motion.div>
           ))}
