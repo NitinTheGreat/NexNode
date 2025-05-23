@@ -116,7 +116,7 @@ const ContactSection = forwardRef<HTMLElement>((props, ref) => {
                     href="mailto:nitinpandey1304@gmail.com"
                     className="text-slate-300 hover:text-indigo-400 transition-colors cursor-pointer"
                   >
-                    nexnode@gmail.com
+                    nexnode01@gmail.com
                   </a>
                 </div>
               </div>
@@ -190,7 +190,7 @@ const ContactSection = forwardRef<HTMLElement>((props, ref) => {
 
           <div className="bg-gradient-to-br from-slate-900 to-indigo-950/50 p-8 rounded-2xl border border-slate-800">
             <h3 className="text-2xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400">
-              Send Me a Message
+              Send Us a Message
             </h3>
 
             <form id="contact-form" onSubmit={handleSubmit} className="space-y-6">
